@@ -19,12 +19,17 @@ function App() {
   }]
 
   const [data, setData] = useState(initData)
-  const data2 = data.map(d => ({...d, id: `${d.id}2`, label: `${d.label}2`}))
+  const data2 = data.map(d => ({value: `${d.value}2`, id: `${d.id}2`, label: `${d.label}2`}))
+  const data3 = data.map(d => ({value: `${d.value}3`, id: `${d.id}3`, label: `${d.label}3`})) 
 
   return (
     <Wrap>
-      <RadioGroup name='FrontEnd1' items={data} rows />
-      <RadioGroup name='FrontEnd2' items={data2} />
+      <div>
+        <h2>Radio</h2>
+        <RadioGroup name='FrontEnd1' items={data} rows />
+        <RadioGroup name='FrontEnd2' items={data2} />
+        <RadioGroup name='FrontEnd2' items={data3} buttons rows />
+      </div>
     </Wrap>
   )
 }

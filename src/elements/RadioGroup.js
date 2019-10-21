@@ -2,20 +2,20 @@ import React from 'react'
 import styled from 'styled-components'
 
 const RadioItem = ({name, ...rest}) => {
-  const { id, value, label, rows } = rest
+  const { id, value, label, rows, buttons } = rest
   return (
-    <RadioItemWrap rows={rows}>
-      <RadioStyle type='radio' name={name} id={id} value={value}/> 
+    <RadioItemWrap rows={rows} >
+      <RadioStyle type='radio' name={name} id={id} value={value} buttons={buttons} /> 
       <label for={id}>{label}</label>{rows && <br />}
     </RadioItemWrap>
   )
 }
 
-const RadioGroup = ({name, items, rows}) => {
+const RadioGroup = ({name, items, rows, buttons}) => {
   
   return (
     <Wrap>
-      {items.map(item => <RadioItem name={name} rows={rows} {...item}/>)}
+      {items.map(item => <RadioItem name={name} rows={rows} buttons={buttons} {...item}/>)}
     </Wrap>
   )
 }
@@ -33,7 +33,7 @@ const RadioItemWrap = styled.div`
   ${props => props.rows && 'display: inline-block;'}
 `
 
-const RadioStyle = styled.input`
+const normalStyle = `
   position: absolute;
   left: -9999px;
 
@@ -77,5 +77,27 @@ const RadioStyle = styled.input`
 
   &:checked + label:after {
     opacity: 1;
+  }  
+`
+
+const buttonStyle = `
+  display: none;
+
+  & + label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 70px;
+    border: 2px solid #E2E2E2;
   }
+
+  &:checked + label {
+    background: #2CA2FC;
+    color: #ffffff;  
+  }
+`
+
+const RadioStyle = styled.input`
+  ${props => props.buttons ? buttonStyle : normalStyle}
 `
