@@ -1,41 +1,45 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import RadioGroup from './elements/RadioGroup'
+import React from 'react'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { createGlobalStyle } from 'styled-components'
+import reset from 'styled-reset'
+
+import HomeView from './views/Home'
+import RadioView from './views/Radio'
+import SelectView from './views/Select'
+
+const InitialStyle = createGlobalStyle`
+  ${reset};
+
+  html, body, #root {
+    height: 100%
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none; 
+  }
+
+  * {
+    box-sizing: border-box;
+    line-height: 1.2;
+  }
+`
 
 function App() {
 
-  const initData = [{
-    'id': 'react',
-    'value': 'react',
-    'label': 'React'
-  }, {
-    'id': 'vue',
-    'value': 'vue',
-    'label': 'Vue' 
-  },{
-    'id': 'vanilla',
-    'value': 'vanilla',
-    'label': 'Vanilla'
-  }]
-
-  const [data, setData] = useState(initData)
-  const data2 = data.map(d => ({value: `${d.value}2`, id: `${d.id}2`, label: `${d.label}2`}))
-  const data3 = data.map(d => ({value: `${d.value}3`, id: `${d.id}3`, label: `${d.label}3`})) 
-
   return (
-    <Wrap>
-      <div>
-        <h2>Radio</h2>
-        <RadioGroup name='FrontEnd1' items={data} rows />
-        <RadioGroup name='FrontEnd2' items={data2} />
-        <RadioGroup name='FrontEnd2' items={data3} buttons rows />
-      </div>
-    </Wrap>
+    <React.Fragment>
+      <InitialStyle />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path='/' component={HomeView} />
+          <Route path='/radio' component={RadioView} />
+          <Route path='/select' component={SelectView} />
+          <Redirect to='/' />
+        </Switch>
+      </BrowserRouter>
+    </React.Fragment>
   )
 }
 
 export default App
-
-const Wrap = styled.div`
-
-`
