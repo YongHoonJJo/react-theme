@@ -26,6 +26,6 @@ const Layout = styled.div`
 
 const Container = styled.div`
   height: 100%;
-  padding: 0 10px;
+  padding: 10px 10px;
   overflow-y: scroll;
 `
