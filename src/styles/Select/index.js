@@ -1,13 +1,12 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-export const Option = ({label, value, setSelected}) => {
-  // return <option value={value}>{label}</option>
+export const Option = ({label, value, selected, setSelected}) => {
   const onClick = () => {
     setSelected(value)
   }
 
-  return <OptionStyle onClick={onClick}>{label}</OptionStyle>
+  return <OptionStyle selected={selected} onClick={onClick}>{label}</OptionStyle>
 }
 
 const SelectComponent = ({children}) => {
@@ -24,11 +23,8 @@ const SelectComponent = ({children}) => {
 
   return (
     <CustomSelect tabIndex={0} onClick={onClickSelect} onBlur={onBlur}>
-      <Selected>{selected}</Selected>
-      {clicked && <Options>{children.map(c => ({...c, props: {...c.props, setSelected, onClickSelect}}))}</Options>}
-      {/* <select>
-        {children}
-      </select> */}
+      <Selected selected={selected}>{selected}</Selected>
+      {clicked && <Options>{children.map(c => ({...c, props: {...c.props, setSelected, onClickSelect, selected: selected === c.props.label}}))}</Options>}
     </CustomSelect>
   )
 }
@@ -49,11 +45,13 @@ const OptionStyle = styled.div`
   padding-left: 10px;
   width: 100%;
   height: 35px;
-  color: #5C6979;
+  color: ${({selected}) => selected ? '#FFFFFF' : '#5C6979'};
   font-size: 14px;
+  ${({selected}) => selected && 'background: #2CA2FC'}
 
   &:hover {
-    background: #E4E8F1;
+    background: #E4E8F1;  
+    color: #5C6979; 
   }
 `
 
@@ -61,7 +59,7 @@ const Selected = styled.div`
   position: absolute;
   top: 10px;
   left: 10px;
-  color: #A2B1C3;
+  color: ${({selected}) => selected === 'Select' ? '#A2B1C3' : '#1F2D3C'};
   
 `
 
@@ -73,18 +71,6 @@ const CustomSelect = styled.div`
   height: 35px;
   cursor: pointer;
   outline: none;
-
-  & select {
-    width: 100%;
-    height: 100%;
-    background: none;
-    border: none;
-    display: none;
-  }
-
-  & select:focus {
-    outline: none;
-  }
 
   &:before {
     content: "";

@@ -7,7 +7,7 @@ const Sidebar = () => {
     <Wrap>
       <Item to='/'>Home</Item>
       <Item to='/radio'>Radio</Item>
-      <Item to='/select'>SELECT</Item>
+      <Item to='/select'>Select</Item>
     </Wrap>
   );
 };
