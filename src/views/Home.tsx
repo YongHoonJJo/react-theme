@@ -2,7 +2,7 @@ import React from 'react'
 
 import Layout from '../layout/DefaultLayout'
 
-const HomeView = () => {
+const HomeView: React.FC = () => {
   return <Layout>Home</Layout>
 }
 

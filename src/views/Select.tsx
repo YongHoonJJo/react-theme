@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import Layout from '../layout/DefaultLayout'
-import Select, { Option } from '../styles/Select'
+import Select from '../styles/Select'
 
-const SelectView = () => {
+const SelectView: React.FC = () => {
   const [state] = useState({
     options: [{
       value: 'Option1',
@@ -37,11 +37,10 @@ const SelectView = () => {
       </Wrap>
       <Wrap>
         <h2>Basic Usage</h2>
-        <Select>
-          {options.map(opt => {
+        <Select options={options} />
+          {/* {options.map(opt => {
             return <Option key={opt.value} label={opt.label} value={opt.value} />
-          })}
-        </Select>
+          })} */}
       </Wrap>
     </Layout>
   )

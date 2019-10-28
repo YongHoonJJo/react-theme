@@ -1,20 +1,38 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-export const Option = ({label, value, selected, setSelected}) => {
-  const onClick = () => {
-    setSelected(value)
-  }
-
-  return <OptionStyle selected={selected} onClick={onClick}>{label}</OptionStyle>
+interface IOption {
+  label: string
+  value: string
 }
 
-const SelectComponent = ({children}) => {
+interface IOptionsProps {
+  options: IOption[]
+}
+
+interface IOptionProps extends IOption {
+  isSelected: boolean
+  onClick(value: string): void 
+}
+
+const Option: React.FC<IOptionProps> = ({label, value, isSelected, onClick}) => {
+  return (
+    <OptionStyle isSelected={isSelected} onClick={() => onClick(value)}>
+      {label}
+    </OptionStyle>
+  )
+}
+
+const SelectComponent: React.FC<IOptionsProps> = ({options}) => {
   const [selected, setSelected] = useState('Select')  
   const [clicked, setClicked] = useState(false)
 
   const onClickSelect = () => {
     setClicked(!clicked)
+  }
+
+  const onClickOption = (value: string) => {
+    setSelected(value) 
   }
 
   const onBlur = () => {
@@ -24,7 +42,13 @@ const SelectComponent = ({children}) => {
   return (
     <CustomSelect tabIndex={0} onClick={onClickSelect} onBlur={onBlur}>
       <Selected selected={selected}>{selected}</Selected>
-      {clicked && <Options>{children.map(c => ({...c, props: {...c.props, setSelected, onClickSelect, selected: selected === c.props.label}}))}</Options>}
+      {clicked && 
+        <Options>
+          {options.map(({label, value}) => (
+            <Option label={label} value={value} isSelected={selected === value} onClick={onClickOption} />
+          ))}
+        </Options>
+      }
     </CustomSelect>
   )
 }
@@ -39,15 +63,15 @@ const Options = styled.div`
   padding: 5px 0;
 `
 
-const OptionStyle = styled.div`
+const OptionStyle = styled.div<{isSelected: boolean}>`
   display: flex;
   align-items: center;
   padding-left: 10px;
   width: 100%;
   height: 35px;
-  color: ${({selected}) => selected ? '#FFFFFF' : '#5C6979'};
+  color: ${({isSelected}) => isSelected ? '#FFFFFF' : '#5C6979'};
   font-size: 14px;
-  ${({selected}) => selected && 'background: #2CA2FC'}
+  ${({isSelected}) => isSelected && 'background: #2CA2FC'}
 
   &:hover {
     background: #E4E8F1;  
@@ -55,7 +79,7 @@ const OptionStyle = styled.div`
   }
 `
 
-const Selected = styled.div`
+const Selected = styled.div<{selected: string}>`
   position: absolute;
   top: 10px;
   left: 10px;

@@ -3,7 +3,7 @@ import React from 'react'
 
 import Layout from '../layout/DefaultLayout'
 
-const RadioView = () => {
+const RadioView: React.FC = () => {
   return (
     <Layout>Radio</Layout>
   )

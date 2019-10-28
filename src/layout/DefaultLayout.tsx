@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Header from '../components/Header'
 import Sidebar from '../components/Sidebar'
 
-const LayoutComponent = ({ children }) => {
+const LayoutComponent: React.FC = ({ children }) => {
   return (
     <Layout>
       <Header />

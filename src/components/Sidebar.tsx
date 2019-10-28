@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
   return (
     <Wrap>
       <Item to='/'>Home</Item>
