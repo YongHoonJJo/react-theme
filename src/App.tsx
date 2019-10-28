@@ -25,7 +25,7 @@ const InitialStyle = createGlobalStyle`
   }
 `
 
-function App() {
+const App: React.FC = () => {
 
   return (
     <React.Fragment>
