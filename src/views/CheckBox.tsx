@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Layout from '../layout/DefaultLayout'
+import BasicUsageCheckbox from '../components/Checkbox/BasicUsage'
 
 const CheckboxView: React.FC = () => {
   return (
@@ -9,6 +10,11 @@ const CheckboxView: React.FC = () => {
       <Wrap>
         <h1>Checkbox</h1>
         <p>A group of options for multiple choices.</p>
+      </Wrap>
+      <Wrap>
+        <h2>Basic Usage</h2>
+        <p>Checkbox can be used alone to switch between two states.</p> 
+        <BasicUsageCheckbox />
       </Wrap>
     </Layout>
   )
