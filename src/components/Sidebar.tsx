@@ -7,6 +7,7 @@ const Sidebar: React.FC = () => {
     <Wrap>
       <Item to='/'>Home</Item>
       <Item to='/radio'>Radio</Item>
+      <Item to='/checkbox'>Checkbox</Item>
       <Item to='/select'>Select</Item>
     </Wrap>
   );
