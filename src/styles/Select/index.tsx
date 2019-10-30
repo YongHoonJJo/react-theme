@@ -8,6 +8,8 @@ interface IOption {
 
 interface IOptionsProps {
   options: IOption[]
+  currentValue: string
+  onClick(value: string): void
 }
 
 interface IOptionProps extends IOption {
@@ -23,16 +25,11 @@ const Option: React.FC<IOptionProps> = ({label, value, isSelected, onClick}) => 
   )
 }
 
-const SelectComponent: React.FC<IOptionsProps> = ({options}) => {
-  const [selected, setSelected] = useState('Select')  
+const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onClick}) => {
   const [clicked, setClicked] = useState(false)
 
   const onClickSelect = () => {
     setClicked(!clicked)
-  }
-
-  const onClickOption = (value: string) => {
-    setSelected(value) 
   }
 
   const onBlur = () => {
@@ -41,11 +38,11 @@ const SelectComponent: React.FC<IOptionsProps> = ({options}) => {
 
   return (
     <CustomSelect tabIndex={0} onClick={onClickSelect} onBlur={onBlur}>
-      <Selected selected={selected}>{selected}</Selected>
+      <Selected selected={currentValue}>{currentValue}</Selected>
       {clicked && 
         <Options>
           {options.map(({label, value}) => (
-            <Option label={label} value={value} isSelected={selected === value} onClick={onClickOption} />
+            <Option label={label} value={value} isSelected={currentValue === value} onClick={onClick} />
           ))}
         </Options>
       }
@@ -61,6 +58,7 @@ const Options = styled.div`
   width: 100%;
   border: 1px solid #D1DBE5;
   padding: 5px 0;
+  background: #FFFFFF;
 `
 
 const OptionStyle = styled.div<{isSelected: boolean}>`
@@ -95,6 +93,7 @@ const CustomSelect = styled.div`
   height: 35px;
   cursor: pointer;
   outline: none;
+  margin: 12px;
 
   &:before {
     content: "";
