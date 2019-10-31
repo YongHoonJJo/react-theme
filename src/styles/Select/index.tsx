@@ -4,6 +4,7 @@ import styled from 'styled-components'
 export interface IOption {
   label: string
   value: string
+  checked: boolean
 }
 
 interface IOptionsProps {
@@ -15,13 +16,12 @@ interface IOptionsProps {
 }
 
 interface IOptionProps extends IOption {
-  isSelected: boolean
   onClick(value: string): void 
 }
 
-const Option: React.FC<IOptionProps> = ({label, value, isSelected, onClick}) => {
+const Option: React.FC<IOptionProps> = ({label, value, checked, onClick}) => {
   return (
-    <OptionStyle isSelected={isSelected} onClick={() => onClick(value)}>
+    <OptionStyle checked={checked} onClick={() => onClick(value)}>
       {label}
     </OptionStyle>
   )
@@ -36,7 +36,7 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSele
   const onBlur = () => {
     clicked && onClickSelect()
   }
-
+  
   return (
     <CustomSelect tabIndex={0} onClick={onClickSelect} onBlur={onBlur}>
       {multiple ? 
@@ -44,8 +44,7 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSele
           {currentValue.length === 0 ? 
             <Selected selected={'Select' as string}>{'Select'}</Selected>
             :
-            options.map(({label, value}) => <OptionTag><TagLabelSpan>{label}</TagLabelSpan><TagRemoveSpan>{'X'}</TagRemoveSpan></OptionTag>)
-            // <OptionTag><TagLabelSpan>{'Option1'}</TagLabelSpan><TagRemoveSpan>{'X'}</TagRemoveSpan></OptionTag>
+            options.map(({label, value, checked}) => checked && <OptionTag key={value}><TagLabelSpan>{label}</TagLabelSpan><TagRemoveSpan>{'X'}</TagRemoveSpan></OptionTag>)
           }
         </MultipleSelected>
         :
@@ -53,8 +52,8 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSele
       }
       {clicked && 
         <Options>
-          {options.map(({label, value}) => (
-            <Option label={label} value={value} isSelected={currentValue === value} onClick={onSelect} />
+          {options.map(({label, value, checked}) => (
+            <Option key={value} label={label} value={value} checked={checked} onClick={onSelect} />
           ))}
         </Options>
       }
@@ -67,7 +66,7 @@ export default SelectComponent
 
 const TagRemoveSpan = styled.span`
   margin-right: 5px;
-  padding-left: 3px;
+  padding-left: 3.5px;
   padding-top: 2px;
   font-size: 13px;
   width: 14px;
@@ -114,15 +113,15 @@ const Options = styled.div`
   z-index: 100;
 `
 
-const OptionStyle = styled.div<{isSelected: boolean}>`
+const OptionStyle = styled.div<{checked: boolean}>`
   display: flex;
   align-items: center;
   padding-left: 10px;
   width: 100%;
   height: 35px;
-  color: ${({isSelected}) => isSelected ? '#FFFFFF' : '#5C6979'};
+  color: ${({checked}) => checked ? '#FFFFFF' : '#5C6979'};
   font-size: 14px;
-  ${({isSelected}) => isSelected && 'background: #2CA2FC'}
+  ${({checked}) => checked && 'background: #2CA2FC'}
 
   &:hover {
     background: #E4E8F1;  

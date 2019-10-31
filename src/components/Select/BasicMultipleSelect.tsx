@@ -12,19 +12,24 @@ const BasicMultipleSelect: React.FC = () => {
   const [state, setState] = useState<IState>({
     options: [{
       value: 'Option1',
-      label: 'Option1'
+      label: 'Option1',
+      checked: false
     }, {
       value: 'Option2',
-      label: 'Option2'
+      label: 'Option2',
+      checked: false
     }, {
       value: 'Option3',
-      label: 'Option3'
+      label: 'Option3',
+      checked: false
     }, {
       value: 'Option4',
-      label: 'Option4'
+      label: 'Option4',
+      checked: false
     }, {
       value: 'Option5',
-      label: 'Option5'
+      label: 'Option5',
+      checked: false
     }],
     currentValue: []
     }
@@ -37,10 +42,10 @@ const BasicMultipleSelect: React.FC = () => {
     setState({...state, currentValue: newValue})
   }
 
-  const onSelect = (value: string) => {
-    const newValue = currentValue.filter(v => v !== value)
-    newValue.push(value)
-    setState({...state, currentValue: newValue})
+  const onSelect = (selected: string) => {
+    const options = state.options.map(({value, label, checked}) => ({value, label, checked: value === selected ? !checked : checked}))
+    const newValue = options.filter(({checked}) => checked === true).map(opt => opt.value)
+    setState({options, currentValue: newValue})
   }
 
   return (
