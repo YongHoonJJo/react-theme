@@ -10,18 +10,18 @@ export interface IOption {
 interface IOptionsProps {
   options: IOption[]
   currentValue: string | string[]
-  onSelect(value: string): void
+  onSelect(value: string, e: React.MouseEvent<HTMLElement>): void
   multiple?: boolean
-  onRemove?(value: string): void
+  onRemove?(value: string, e: React.MouseEvent<HTMLElement>): void
 }
 
 interface IOptionProps extends IOption {
-  onClick(value: string): void 
+  onSelect(value: string, e: React.MouseEvent<HTMLElement>): void 
 }
 
-const Option: React.FC<IOptionProps> = ({label, value, checked, onClick}) => {
+const Option: React.FC<IOptionProps> = ({label, value, checked, onSelect}) => {
   return (
-    <OptionStyle checked={checked} onClick={() => onClick(value)}>
+    <OptionStyle checked={checked} onClick={(e) => onSelect(value, e)}>
       {label}
     </OptionStyle>
   )
@@ -44,7 +44,7 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSele
           {currentValue.length === 0 ? 
             <Selected selected={'Select' as string}>{'Select'}</Selected>
             :
-            options.map(({label, value, checked}) => checked && <OptionTag key={value}><TagLabelSpan>{label}</TagLabelSpan><TagRemoveSpan onClick={() => onRemove && onRemove(value)}>{'X'}</TagRemoveSpan></OptionTag>)
+            options.map(({label, value, checked}) => checked && <OptionTag key={value}><TagLabelSpan>{label}</TagLabelSpan><TagRemoveSpan onClick={(e) => onRemove && onRemove(value, e)}>{'X'}</TagRemoveSpan></OptionTag>)
           }
         </MultipleSelected>
         :
@@ -53,7 +53,7 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSele
       {clicked && 
         <Options>
           {options.map(({label, value, checked}) => (
-            <Option key={value} label={label} value={value} checked={checked} onClick={onSelect} />
+            <Option key={value} label={label} value={value} checked={checked} onSelect={onSelect} />
           ))}
         </Options>
       }
