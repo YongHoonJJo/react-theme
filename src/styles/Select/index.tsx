@@ -44,7 +44,7 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSele
           {currentValue.length === 0 ? 
             <Selected selected={'Select' as string}>{'Select'}</Selected>
             :
-            options.map(({label, value, checked}) => checked && <OptionTag key={value}><TagLabelSpan>{label}</TagLabelSpan><TagRemoveSpan>{'X'}</TagRemoveSpan></OptionTag>)
+            options.map(({label, value, checked}) => checked && <OptionTag key={value}><TagLabelSpan>{label}</TagLabelSpan><TagRemoveSpan onClick={() => onRemove && onRemove(value)}>{'X'}</TagRemoveSpan></OptionTag>)
           }
         </MultipleSelected>
         :

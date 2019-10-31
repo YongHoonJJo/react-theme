@@ -37,9 +37,10 @@ const BasicMultipleSelect: React.FC = () => {
 
   const { options, currentValue } = state
 
-  const onRemove = (value: string) => {
-    const newValue = currentValue.filter(v => v !== value)
-    setState({...state, currentValue: newValue})
+  const onRemove = (selected: string) => {
+    const options = state.options.map(({value, label, checked}) => ({value, label, checked: value === selected ? false : checked}))
+    const newValue = currentValue.filter(v => v !== selected)
+    setState({options, currentValue: newValue})
   }
 
   const onSelect = (selected: string) => {
