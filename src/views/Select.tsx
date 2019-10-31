@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import Layout from '../layout/DefaultLayout'
 import BasicUsageSelect from '../components/Select/BasicUsage'
+import BasicMultipleSelect from '../components/Select/BasicMultipleSelect'
 
 const SelectView: React.FC = () => {
   return (
@@ -14,6 +15,11 @@ const SelectView: React.FC = () => {
       <Wrap>
         <h2>Basic Usage</h2>
         <BasicUsageSelect />
+      </Wrap>
+      <Wrap>
+        <h2>Basic multiple select</h2>
+        <p>Multiple select uses tags to display selected options.</p>
+        <BasicMultipleSelect /> 
       </Wrap>
     </Layout>
   )

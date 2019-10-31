@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-interface IOption {
+export interface IOption {
   label: string
   value: string
 }
 
 interface IOptionsProps {
   options: IOption[]
-  currentValue: string
-  onClick(value: string): void
+  currentValue: string | string[]
+  onSelect(value: string): void
+  multiple?: boolean
+  onRemove?(value: string): void
 }
 
 interface IOptionProps extends IOption {
@@ -25,9 +27,8 @@ const Option: React.FC<IOptionProps> = ({label, value, isSelected, onClick}) => 
   )
 }
 
-const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onClick}) => {
+const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSelect, onRemove, multiple}) => {
   const [clicked, setClicked] = useState(false)
-
   const onClickSelect = () => {
     setClicked(!clicked)
   }
@@ -38,11 +39,22 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onClic
 
   return (
     <CustomSelect tabIndex={0} onClick={onClickSelect} onBlur={onBlur}>
-      <Selected selected={currentValue}>{currentValue}</Selected>
+      {multiple ? 
+        <MultipleSelected>
+          {currentValue.length === 0 ? 
+            <Selected selected={'Select' as string}>{'Select'}</Selected>
+            :
+            options.map(({label, value}) => <OptionTag><TagLabelSpan>{label}</TagLabelSpan><TagRemoveSpan>{'X'}</TagRemoveSpan></OptionTag>)
+            // <OptionTag><TagLabelSpan>{'Option1'}</TagLabelSpan><TagRemoveSpan>{'X'}</TagRemoveSpan></OptionTag>
+          }
+        </MultipleSelected>
+        :
+        <Selected selected={currentValue as string}>{currentValue}</Selected>
+      }
       {clicked && 
         <Options>
           {options.map(({label, value}) => (
-            <Option label={label} value={value} isSelected={currentValue === value} onClick={onClick} />
+            <Option label={label} value={value} isSelected={currentValue === value} onClick={onSelect} />
           ))}
         </Options>
       }
@@ -52,6 +64,46 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onClic
 
 export default SelectComponent
 
+
+const TagRemoveSpan = styled.span`
+  margin-right: 5px;
+  padding-left: 3px;
+  padding-top: 2px;
+  font-size: 13px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  
+  &: hover {
+    color: #FFFFFF;
+    background: #2CA2FC;
+  }
+`
+
+const TagLabelSpan = styled.span`
+  margin-left: 5px;
+  margin-right: 5px;
+`
+
+const OptionTag = styled.div`
+  font-size: 14px;
+  height: 25px;
+  color: #2FA2FB;
+  background: #E9F6FF;
+  border-radius: 5px / 5px;
+  border: 1px solid #C2E4FD;
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+`
+
+const MultipleSelected = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: #A2B1C3;
+`
+
 const Options = styled.div`
   position: absolute;
   top: 40px;
@@ -59,6 +111,7 @@ const Options = styled.div`
   border: 1px solid #D1DBE5;
   padding: 5px 0;
   background: #FFFFFF;
+  z-index: 100;
 `
 
 const OptionStyle = styled.div<{isSelected: boolean}>`
@@ -82,7 +135,6 @@ const Selected = styled.div<{selected: string}>`
   top: 10px;
   left: 10px;
   color: ${({selected}) => selected === 'Select' ? '#A2B1C3' : '#1F2D3C'};
-  
 `
 
 const CustomSelect = styled.div`

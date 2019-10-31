@@ -25,7 +25,7 @@ const BasicUsageSelect: React.FC = () => {
     }
   )
 
-  const onClick = (value: string) => {
+  const onSelect = (value: string) => {
     setState({...state, currentValue: value}) 
   }
   
@@ -33,7 +33,7 @@ const BasicUsageSelect: React.FC = () => {
 
   return (
     <Wrap>
-      <Select options={options} currentValue={currentValue} onClick={onClick}/>
+      <Select options={options} currentValue={currentValue} onSelect={onSelect}/>
     </Wrap>
   )
 }
