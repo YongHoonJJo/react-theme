@@ -16,18 +16,19 @@ interface IOptionsProps {
 }
 
 interface IOptionProps extends IOption {
+  multiple: boolean
   onSelect(value: string, e: React.MouseEvent<HTMLElement>): void 
 }
 
-const Option: React.FC<IOptionProps> = ({label, value, checked, onSelect}) => {
+const Option: React.FC<IOptionProps> = ({label, value, checked, onSelect, multiple}) => {
   return (
-    <OptionStyle checked={checked} onClick={(e) => onSelect(value, e)}>
+    <OptionStyle multiple={multiple} checked={checked} onClick={(e) => onSelect(value, e)}>
       {label}
     </OptionStyle>
   )
 }
 
-const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSelect, onRemove, multiple}) => {
+const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSelect, onRemove, multiple=false}) => {
   const [clicked, setClicked] = useState(false)
   const onClickSelect = () => {
     setClicked(!clicked)
@@ -53,7 +54,7 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSele
       {clicked && 
         <Options>
           {options.map(({label, value, checked}) => (
-            <Option key={value} label={label} value={value} checked={checked} onSelect={onSelect} />
+            <Option key={value} label={label} value={value} checked={checked} onSelect={onSelect} multiple={multiple} />
           ))}
         </Options>
       }
@@ -113,19 +114,20 @@ const Options = styled.div`
   z-index: 100;
 `
 
-const OptionStyle = styled.div<{checked: boolean}>`
+const OptionStyle = styled.div<{multiple: boolean, checked: boolean}>`
   display: flex;
   align-items: center;
   padding-left: 10px;
   width: 100%;
   height: 35px;
-  color: ${({checked}) => checked ? '#FFFFFF' : '#5C6979'};
+  color: ${({checked, multiple}) => checked ? (!multiple ? '#FFFFFF' : '#2CA2FC') : '#5C6979'};
+  
   font-size: 14px;
-  ${({checked}) => checked && 'background: #2CA2FC'}
+  ${({checked, multiple}) => checked && !multiple && 'background: #2CA2FC'}
 
   &:hover {
     background: #E4E8F1;  
-    color: #5C6979; 
+    color: ${({checked, multiple}) => (multiple && checked) ? '#2CA2FC' : '#5C6979'}; 
   }
 `
 
