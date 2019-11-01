@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import Layout from '../layout/DefaultLayout'
 import BasicUsageRadio from '../components/Radio/BasicUsage'
+import ButtonStyle from '../components/Radio/ButtonStyle'
 
 const RadioView: React.FC = () => {
   return (
@@ -15,6 +16,11 @@ const RadioView: React.FC = () => {
         <h2>Basic Usage</h2>
         <p>Radio should not have too many options. Otherwise, use the Select component instead.</p> 
         <BasicUsageRadio />
+      </Wrap>
+      <Wrap>
+        <h2>Button style</h2>
+        <p>Radio with button styles.</p> 
+        <ButtonStyle />
       </Wrap>
     </Layout>
   )

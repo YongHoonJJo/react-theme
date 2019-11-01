@@ -39,9 +39,8 @@ export default BasicUsageRadio
 
 const Wrap = styled.div`
   margin: 15px 0;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #E2E2E2;
   width: 100%;
-  border-radius: 5px / 5px;
-  
+  border-radius: 5px / 5px; 
 `
