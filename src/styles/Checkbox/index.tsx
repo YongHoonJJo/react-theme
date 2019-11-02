@@ -5,13 +5,16 @@ interface ICheckboxProps {
   id: string
   label: string
   checked: boolean
+  buttonStyle?: boolean
+  firstChild?: boolean
+  lastChild?: boolean
   onChange(): void
 }
 
-const CheckboxComponent: React.FC<ICheckboxProps> = ({id, label, checked, onChange}) => {
+const CheckboxComponent: React.FC<ICheckboxProps> = ({id, label, checked, onChange, buttonStyle=false, firstChild=false, lastChild=false}) => {
   return (
-    <Wrap>
-      <CheckboxStyle id={id} type='checkbox' checked={checked} onChange={onChange} />
+    <Wrap buttonStyle={buttonStyle}>
+      <CheckboxStyle id={id} type='checkbox' checked={checked} onChange={onChange} buttonStyle={buttonStyle} firstChild={firstChild} lastChild={lastChild} />
       <label htmlFor={id}>{label}</label>
     </Wrap>
   )
@@ -19,21 +22,12 @@ const CheckboxComponent: React.FC<ICheckboxProps> = ({id, label, checked, onChan
 
 export default CheckboxComponent
 
-const Wrap = styled.div`
-  margin: 10px 8px;
+const Wrap = styled.div<{buttonStyle: boolean}>`
+  margin: ${({buttonStyle}) => buttonStyle ? '10px 0' : '0 20px 0 0'};
   display: inline-block;
 `
 
-const CheckboxStyle = styled.input`
-  position: absolute;
-  left: -9999px;
-
-  & + label {
-    position: relative;
-    padding: 2px 0 0 23px;
-    cursor: pointer;
-  }
-
+const normalStyled = `
   & + label:before {
     content: "";
     background: #fff;
@@ -73,4 +67,48 @@ const CheckboxStyle = styled.input`
   &:checked + label:after {
     opacity: 1; 
   }  
+`
+
+const buttonStyled = `
+  & + label {
+    padding: 10px 12px;
+    border-top: 1px solid #C0CBD9;
+    border-bottom: 1px solid #C0CBD9;
+    border-left: 1px solid #C0CBD9;
+  }
+
+  &:hover + label {
+    color: #2CA2FC;
+  }
+
+  &:checked + label {
+    color: #FFFFFF;
+    background: #2CA2FC; 
+  }
+`
+
+const CheckboxStyle = styled.input<{buttonStyle: boolean, firstChild: boolean, lastChild: boolean}>`
+  position: absolute;
+  left: -9999px;
+
+  & + label {
+    position: relative;
+    padding: 2px 0 0 23px;
+    cursor: pointer;
+  }
+
+  ${({buttonStyle}) => buttonStyle ? buttonStyled : normalStyled}
+
+  ${({buttonStyle, firstChild}) => buttonStyle && firstChild && `
+    & + label {
+      border-radius: 5px 0 0 5px / 5px 0 0 5px; 
+    }
+  `} 
+
+  ${({buttonStyle, lastChild}) => buttonStyle && lastChild && (`
+    & + label {
+      border-right: 1px solid #C0CBD9;
+      border-radius: 0 5px 5px 0 / 0 5px 5px 0; 
+    }
+  `)} 
 `

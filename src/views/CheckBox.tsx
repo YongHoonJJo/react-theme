@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import Layout from '../layout/DefaultLayout'
 import BasicUsageCheckbox from '../components/Checkbox/BasicUsage'
+import ButtonStyle from '../components/Checkbox/ButtonStyle'
 
 const CheckboxView: React.FC = () => {
   return (
@@ -15,6 +16,11 @@ const CheckboxView: React.FC = () => {
         <h2>Basic Usage</h2>
         <p>Checkbox can be used alone to switch between two states.</p> 
         <BasicUsageCheckbox />
+      </Wrap>
+      <Wrap>
+        <h2>Button style</h2>
+        <p>Checkbox with button styles.</p> 
+        <ButtonStyle />
       </Wrap>
     </Layout>
   )
