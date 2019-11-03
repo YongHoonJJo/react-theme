@@ -6,6 +6,7 @@ import reset from 'styled-reset'
 import HomeView from './views/Home'
 import RadioView from './views/Radio'
 import CheckboxView from './views/CheckBox'
+import InputView from './views/Input'
 import SelectView from './views/Select'
 
 const InitialStyle = createGlobalStyle`
@@ -36,6 +37,7 @@ const App: React.FC = () => {
           <Route exact path='/' component={HomeView} />
           <Route path='/radio' component={RadioView} />
           <Route path='/checkbox' component={CheckboxView} />
+          <Route path='/input' component={InputView} />
           <Route path='/select' component={SelectView} />
           <Redirect to='/' />
         </Switch>
