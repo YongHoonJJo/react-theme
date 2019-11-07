@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import Layout from '../layout/DefaultLayout'
+import BasicUsageInput from '../components/Input/BasicUsage'
 
 const HomeView: React.FC = () => {
   return (
@@ -9,6 +10,10 @@ const HomeView: React.FC = () => {
       <Wrap>
         <h1>Input</h1>
         <p>Input data using mouse or keyboard.</p>
+      </Wrap>
+      <Wrap>
+        <h2>Basic Usage</h2>
+        <BasicUsageInput />
       </Wrap>
     </Layout>
   )
