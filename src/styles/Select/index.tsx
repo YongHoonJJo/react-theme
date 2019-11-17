@@ -37,22 +37,57 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSele
   const onBlur = () => {
     clicked && onClickSelect()
   }
+
+  let halfCount = 1
+  const optionTags: JSX.Element[] = []
+  if(multiple) {
+    const tempOptionTags = options.filter(({checked}) => checked).map(({label, value}) => (
+      <OptionTag key={value}>
+        <TagLabelSpan>{label}</TagLabelSpan>
+        <TagRemoveSpan onClick={(e) => onRemove && onRemove(value, e)}>{'X'}</TagRemoveSpan>
+      </OptionTag>
+    ))
+    
+    const optionTagCount = tempOptionTags.length 
+    tempOptionTags.forEach((tag, idx) => {
+      if((idx&1) === 1) return ;
+      if((optionTagCount&1) === 1 && idx === optionTagCount-1) {
+        optionTags.push((
+          <OptionTagsDiv>
+            {tag}
+          </OptionTagsDiv>
+        ))
+        return ;
+      }
+      optionTags.push((
+        <OptionTagsDiv>
+          {tempOptionTags[idx]}
+          {tempOptionTags[idx+1]}
+        </OptionTagsDiv>
+      ))
+    })
+
+    halfCount = Math.ceil(optionTagCount/2)
+    if(halfCount === 0) halfCount = 1
+  }
   
   return (
-    <CustomSelect tabIndex={0} onClick={onClickSelect} onBlur={onBlur}>
+    <CustomSelect tabIndex={0} onClick={onClickSelect} onBlur={onBlur} halfCount={halfCount}>
       {multiple ? 
         <MultipleSelected>
           {currentValue.length === 0 ? 
             <Selected selected={'Select' as string}>{'Select'}</Selected>
             :
-            options.map(({label, value, checked}) => checked && <OptionTag key={value}><TagLabelSpan>{label}</TagLabelSpan><TagRemoveSpan onClick={(e) => onRemove && onRemove(value, e)}>{'X'}</TagRemoveSpan></OptionTag>)
+            <React.Fragment>
+              {optionTags}
+            </React.Fragment>
           }
         </MultipleSelected>
         :
         <Selected selected={currentValue as string}>{currentValue}</Selected>
       }
       {clicked && 
-        <Options>
+        <Options halfCount={halfCount}>
           {options.map(({label, value, checked}) => (
             <Option key={value} label={label} value={value} checked={checked} onSelect={onSelect} multiple={multiple} />
           ))}
@@ -63,6 +98,12 @@ const SelectComponent: React.FC<IOptionsProps> = ({options, currentValue, onSele
 }
 
 export default SelectComponent
+
+const OptionTagsDiv = styled.div`
+  display: flex;  
+  align-items: center;  
+  height: 35px;   
+`
 
 
 const TagRemoveSpan = styled.span`
@@ -97,16 +138,19 @@ const OptionTag = styled.div`
   margin-left: 5px;
 `
 
+// align-items: center;
 const MultipleSelected = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  
+  justify-content: center;
   height: 100%;
   color: #A2B1C3;
 `
 
-const Options = styled.div`
+const Options = styled.div<{halfCount: number}>`
   position: absolute;
-  top: 40px;
+  top: ${({halfCount}) => `${40+35*(halfCount-1)}px`};
   width: 100%;
   border: 1px solid #D1DBE5;
   padding: 5px 0;
@@ -138,15 +182,16 @@ const Selected = styled.div<{selected: string}>`
   color: ${({selected}) => selected === 'Select' ? '#A2B1C3' : '#1F2D3C'};
 `
 
-const CustomSelect = styled.div`
+const CustomSelect = styled.div<{halfCount: number}>`
   position: relative;
   border: 1px solid #2CA2FC;
   border-radius: 5px / 5px;
   width: 250px;
-  height: 35px;
+  height: ${({halfCount}) => `${35*halfCount}px`};
   cursor: pointer;
   outline: none;
   margin: 12px;
+  display: flex;
 
   &:before {
     content: "";
